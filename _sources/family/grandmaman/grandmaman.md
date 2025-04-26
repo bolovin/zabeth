@@ -1,4 +1,4 @@
-# Photos with Elizabeth
+# Photos with Elisabeth
 
 ```{include} ./photos.md
 ```

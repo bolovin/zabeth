@@ -1,4 +1,4 @@
-# Elizabeth Jensen's photo album
+# Elisabeth Jensen's photo album
 
 ```{note}
 Dear Grandmaman,
