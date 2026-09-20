@@ -12,6 +12,10 @@ generate-slideshow:
 audit:
 	poetry run python detect_duplicates.py
 
+.PHONY: import
+import:
+	poetry run python import_photos.py $(SRC) $(SECTION)
+
 .PHONY: shrink
 shrink:
 	poetry run python shrink_images.py
