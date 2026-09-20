@@ -7,6 +7,7 @@ first two tiers find anything, so `make audit` can gate a deploy.
 
 import hashlib
 import os
+import re
 import sys
 from collections import defaultdict
 from itertools import combinations
@@ -17,6 +18,7 @@ from PIL import Image
 ROOT_DIR = "src/zabeth"
 EXTENSIONS = {".jpg", ".jpeg", ".png"}
 NEAR_DISTANCE = 3
+SAFE_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 
 
 def image_paths():
@@ -30,6 +32,20 @@ def report(title, groups):
     print(f"{title}: {len(groups)}")
     for group in groups:
         print("  " + "  |  ".join(os.path.relpath(p, ROOT_DIR) for p in group))
+
+
+def filename_problems(paths):
+    """The build flattens all sections into one _images/ folder served from a
+    case-sensitive host, so basenames must be unique (ignoring case) and safe."""
+    by_lower = defaultdict(list)
+    unsafe = []
+    for path in paths:
+        name = os.path.basename(path)
+        by_lower[name.lower()].append(path)
+        if not SAFE_NAME.match(name):
+            unsafe.append([path])
+    clashes = [g for g in by_lower.values() if len(g) > 1]
+    return clashes, unsafe
 
 
 def main():
@@ -57,10 +73,13 @@ def main():
         and dhashes[a] != dhashes[b]
         and dhashes[a] - dhashes[b] <= NEAR_DISTANCE
     ]
+    clashes, unsafe = filename_problems(dhashes)
+    report("basename clashes across sections (case-insensitive)", clashes)
+    report("unsafe filenames (spaces, parentheses, ...)", unsafe)
     report("byte-identical groups", identical)
     report("perceptual-identical groups (re-encodes)", reencoded)
     report(f"near duplicates in same folder (dhash <= {NEAR_DISTANCE}), review by eye", near)
-    if identical or reencoded:
+    if identical or reencoded or clashes or unsafe:
         sys.exit(1)
 
 

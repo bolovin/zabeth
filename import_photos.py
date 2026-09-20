@@ -5,6 +5,7 @@ Usage: poetry run python import_photos.py <source dir> <section, e.g. family/ber
 """
 
 import os
+import re
 import shutil
 import sys
 
@@ -19,16 +20,31 @@ JPEG = {".jpg", ".jpeg"}
 OTHER = {".png", ".gif", ".webp"}
 
 
-def unique(dest_dir, name):
+def taken_names():
+    """Basenames already used anywhere in the book, lowercased.
+
+    The build flattens every section into one _images/ folder and the site is
+    served from a case-sensitive host, so names must be unique across sections.
+    """
+    names = set()
+    for dirpath, _, filenames in os.walk(ROOT_DIR):
+        if os.path.basename(dirpath) == "images":
+            names.update(f.lower() for f in filenames)
+    return names
+
+
+def unique(taken, name):
     stem, ext = os.path.splitext(name)
-    candidate, n = name, 1
-    while os.path.exists(os.path.join(dest_dir, candidate)):
+    stem = re.sub(r"[^A-Za-z0-9._-]+", "_", stem).strip("_")
+    candidate, n = f"{stem}{ext}", 1
+    while candidate.lower() in taken:
         candidate = f"{stem}_{n}{ext}"
         n += 1
+    taken.add(candidate.lower())
     return candidate
 
 
-def import_one(src, dest_dir):
+def import_one(src, dest_dir, taken):
     name = os.path.basename(src)
     stem, ext = os.path.splitext(name)
     ext = ext.lower()
@@ -36,13 +52,13 @@ def import_one(src, dest_dir):
         with Image.open(src) as image:
             needs_rewrite = ext in HEIC or image.getexif().get(274, 1) != 1
             if needs_rewrite:
-                out = os.path.join(dest_dir, unique(dest_dir, f"{stem}.jpg"))
+                out = os.path.join(dest_dir, unique(taken, f"{stem}.jpg"))
                 rotated = ImageOps.exif_transpose(image).convert("RGB")
                 rotated.save(out, "JPEG", quality=95, optimize=True)
                 return out
     elif ext not in OTHER:
         return None
-    out = os.path.join(dest_dir, unique(dest_dir, name))
+    out = os.path.join(dest_dir, unique(taken, name))
     shutil.copy2(src, out)
     return out
 
@@ -53,11 +69,12 @@ def main():
     source, section = sys.argv[1], sys.argv[2]
     dest_dir = os.path.join(ROOT_DIR, section, "images")
     os.makedirs(dest_dir, exist_ok=True)
+    taken = taken_names()
     imported = skipped = 0
     for name in sorted(os.listdir(source)):
         if name.startswith("."):
             continue
-        out = import_one(os.path.join(source, name), dest_dir)
+        out = import_one(os.path.join(source, name), dest_dir, taken)
         if out:
             imported += 1
         else:
