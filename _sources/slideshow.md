@@ -14,8 +14,8 @@
   <a data-fancybox="gallery" href="_images/010.jpg">
     <img src="_images/010.jpg" width="200" style="display:none;">
   </a>
-  <a data-fancybox="gallery" href="_images/012 (2).jpg">
-    <img src="_images/012 (2).jpg" width="200" style="display:none;">
+  <a data-fancybox="gallery" href="_images/012_2.jpg">
+    <img src="_images/012_2.jpg" width="200" style="display:none;">
   </a>
   <a data-fancybox="gallery" href="_images/014.jpg">
     <img src="_images/014.jpg" width="200" style="display:none;">
@@ -230,8 +230,8 @@
   <a data-fancybox="gallery" href="_images/IMG_0680.JPG">
     <img src="_images/IMG_0680.JPG" width="200" style="display:none;">
   </a>
-  <a data-fancybox="gallery" href="_images/IMG_0680.jpg">
-    <img src="_images/IMG_0680.jpg" width="200" style="display:none;">
+  <a data-fancybox="gallery" href="_images/IMG_0680_1.jpg">
+    <img src="_images/IMG_0680_1.jpg" width="200" style="display:none;">
   </a>
   <a data-fancybox="gallery" href="_images/IMG_0681.JPG">
     <img src="_images/IMG_0681.JPG" width="200" style="display:none;">
@@ -2492,14 +2492,14 @@
   <a data-fancybox="gallery" href="_images/PC310410.JPG">
     <img src="_images/PC310410.JPG" width="200" style="display:none;">
   </a>
-  <a data-fancybox="gallery" href="_images/PC310410.JPG">
-    <img src="_images/PC310410.JPG" width="200" style="display:none;">
+  <a data-fancybox="gallery" href="_images/PC310410_house.JPG">
+    <img src="_images/PC310410_house.JPG" width="200" style="display:none;">
   </a>
   <a data-fancybox="gallery" href="_images/PC310411.JPG">
     <img src="_images/PC310411.JPG" width="200" style="display:none;">
   </a>
-  <a data-fancybox="gallery" href="_images/PC310411.JPG">
-    <img src="_images/PC310411.JPG" width="200" style="display:none;">
+  <a data-fancybox="gallery" href="_images/PC310411_house.JPG">
+    <img src="_images/PC310411_house.JPG" width="200" style="display:none;">
   </a>
   <a data-fancybox="gallery" href="_images/PC310412.JPG">
     <img src="_images/PC310412.JPG" width="200" style="display:none;">
@@ -2507,8 +2507,8 @@
   <a data-fancybox="gallery" href="_images/PC310417.JPG">
     <img src="_images/PC310417.JPG" width="200" style="display:none;">
   </a>
-  <a data-fancybox="gallery" href="_images/PC310417.JPG">
-    <img src="_images/PC310417.JPG" width="200" style="display:none;">
+  <a data-fancybox="gallery" href="_images/PC310417_bernard.JPG">
+    <img src="_images/PC310417_bernard.JPG" width="200" style="display:none;">
   </a>
   <a data-fancybox="gallery" href="_images/PC310418.JPG">
     <img src="_images/PC310418.JPG" width="200" style="display:none;">
@@ -2522,8 +2522,8 @@
   <a data-fancybox="gallery" href="_images/PC310421.JPG">
     <img src="_images/PC310421.JPG" width="200" style="display:none;">
   </a>
-  <a data-fancybox="gallery" href="_images/PC310421.JPG">
-    <img src="_images/PC310421.JPG" width="200" style="display:none;">
+  <a data-fancybox="gallery" href="_images/PC310421_bernard.JPG">
+    <img src="_images/PC310421_bernard.JPG" width="200" style="display:none;">
   </a>
   <a data-fancybox="gallery" href="_images/PC310426.JPG">
     <img src="_images/PC310426.JPG" width="200" style="display:none;">
@@ -2531,11 +2531,11 @@
   <a data-fancybox="gallery" href="_images/Scan008.jpg">
     <img src="_images/Scan008.jpg" width="200" style="display:none;">
   </a>
-  <a data-fancybox="gallery" href="_images/Screenshot 2026-09-18 at 12.14.22 PM.png">
-    <img src="_images/Screenshot 2026-09-18 at 12.14.22 PM.png" width="200" style="display:none;">
+  <a data-fancybox="gallery" href="_images/Screenshot_2026-09-18_12.14.22.png">
+    <img src="_images/Screenshot_2026-09-18_12.14.22.png" width="200" style="display:none;">
   </a>
-  <a data-fancybox="gallery" href="_images/Screenshot 2026-09-18 at 12.15.30 PM.png">
-    <img src="_images/Screenshot 2026-09-18 at 12.15.30 PM.png" width="200" style="display:none;">
+  <a data-fancybox="gallery" href="_images/Screenshot_2026-09-18_12.15.30.png">
+    <img src="_images/Screenshot_2026-09-18_12.15.30.png" width="200" style="display:none;">
   </a>
   <a data-fancybox="gallery" href="_images/bernard.jpg">
     <img src="_images/bernard.jpg" width="200" style="display:none;">
