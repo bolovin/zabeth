@@ -1,0 +1,10 @@
+format: jb-book
+root: intro
+chapters:
+- file: family/bernard/captain
+- file: family/dariane/dari
+- file: family/colin/colin
+- file: family/nicole/nic
+- file: family/grandmaman/grandmaman
+- file: family/house/house
+- file: travels/away/away
