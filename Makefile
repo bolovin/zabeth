@@ -8,8 +8,17 @@ generate-slideshow:
 	poetry run python generate_slideshow.py
 
 .PHONY: build
+.PHONY: audit
+audit:
+	poetry run python detect_duplicates.py
+
+.PHONY: shrink
+shrink:
+	poetry run python shrink_images.py
+
 build: clean generate-md generate-slideshow
 	poetry run jupyter-book build --path-output out src/zabeth --verbose
+	$(MAKE) shrink
 
 .PHONY: clean
 clean:

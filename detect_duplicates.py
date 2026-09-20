@@ -1,33 +1,68 @@
-from PIL import Image
-import imagehash
+"""Audit src/ photos for redundant images before they get published.
+
+Tiers: byte-identical, perceptual-hash identical (re-encodes), and near
+duplicates within one folder that need a human look. Exits non-zero when the
+first two tiers find anything, so `make audit` can gate a deploy.
+"""
+
+import hashlib
 import os
+import sys
 from collections import defaultdict
+from itertools import combinations
+
+import imagehash
+from PIL import Image
+
+ROOT_DIR = "src/zabeth"
+EXTENSIONS = {".jpg", ".jpeg", ".png"}
+NEAR_DISTANCE = 3
 
 
-def find_duplicates(start_directory, hash_func=imagehash.phash):
-    """Find and report duplicate images based on perceptual hash."""
-    hashes = defaultdict(list)
+def image_paths():
+    for dirpath, _, filenames in os.walk(ROOT_DIR):
+        for name in sorted(filenames):
+            if os.path.splitext(name)[1].lower() in EXTENSIONS:
+                yield os.path.join(dirpath, name)
 
-    for root, _, files in os.walk(start_directory):
-        for filename in files:
-            if filename.lower().endswith((".jpg", ".jpeg", ".png")):
-                image_path = os.path.join(root, filename)
-                try:
-                    with Image.open(image_path) as img:
-                        img_hash = hash_func(img)
-                        hashes[str(img_hash)].append(image_path)
-                except Exception as e:
-                    print(f"Error hashing {image_path}: {e}")
 
-    # Report duplicates
-    for hash_value, paths in hashes.items():
-        if len(paths) > 1:
-            print(f"\nDuplicate images (hash={hash_value}):")
-            for p in paths:
-                print(f"  - {p}")
+def report(title, groups):
+    print(f"{title}: {len(groups)}")
+    for group in groups:
+        print("  " + "  |  ".join(os.path.relpath(p, ROOT_DIR) for p in group))
+
+
+def main():
+    by_sha = defaultdict(list)
+    by_phash = defaultdict(list)
+    dhashes = {}
+    for path in image_paths():
+        with open(path, "rb") as handle:
+            by_sha[hashlib.sha256(handle.read()).hexdigest()].append(path)
+        with Image.open(path) as image:
+            rgb = image.convert("RGB")
+            by_phash[str(imagehash.phash(rgb))].append(path)
+            dhashes[path] = imagehash.dhash(rgb)
+    print(f"scanned {len(dhashes)} images under {ROOT_DIR}")
+
+    identical = [g for g in by_sha.values() if len(g) > 1]
+    keeper_of = {p: g[0] for g in by_sha.values() for p in g}
+    reencoded = [
+        g for g in by_phash.values() if len({keeper_of[p] for p in g}) > 1
+    ]
+    near = [
+        (a, b)
+        for a, b in combinations(dhashes, 2)
+        if os.path.dirname(a) == os.path.dirname(b)
+        and dhashes[a] != dhashes[b]
+        and dhashes[a] - dhashes[b] <= NEAR_DISTANCE
+    ]
+    report("byte-identical groups", identical)
+    report("perceptual-identical groups (re-encodes)", reencoded)
+    report(f"near duplicates in same folder (dhash <= {NEAR_DISTANCE}), review by eye", near)
+    if identical or reencoded:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
-    start_dir = os.getcwd()
-    print(f"Scanning for duplicate images in: {start_dir}")
-    find_duplicates(start_dir)
+    main()
